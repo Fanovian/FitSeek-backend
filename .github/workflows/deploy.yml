@@ -19,9 +19,6 @@ jobs:
           script: |
             cd ~/FitSeek-backend
             echo "拉取最新代码"
-            git fetch origin
-            git reset
-            git checkout main
             git pull origin main
             echo "安装依赖"
             npm install
