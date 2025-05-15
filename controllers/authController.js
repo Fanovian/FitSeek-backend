@@ -11,7 +11,7 @@ exports.register = async (req, res) => {
     // 检查是否已存在用户名或手机号
     const existingUser = await User.findOne({ $or: [{ name }, { tel }] });
     if (existingUser) {
-      return res.status(400).json({ success: false, message: '用户名或手机号已存在' });
+      return res.status(400).json({ code: 400, success: false, message: '用户名或手机号已存在' });
     }
 
     // 加密密码
@@ -28,20 +28,11 @@ exports.register = async (req, res) => {
 
     await newUser.save();
 
-    // 生成 JWT Token
-    const token = jwt.sign(
-      { userId: newUser.user_id, username: newUser.name },
-      process.env.JWT_SECRET,
-      { expiresIn: '7d' }
-    );
-
-    res.json({
+    res.status(200).json({
+      code: 200,
       success: true,
-      token,
       user: {
         user_id: newUser.user_id,
-        name: newUser.name,
-        tel: newUser.tel,
         type: newUser.type,
         created_at: newUser.created_at
       }
@@ -49,45 +40,76 @@ exports.register = async (req, res) => {
 
   } catch (error) {
     console.error('注册失败:', error);
-    res.status(500).json({ success: false, message: '服务器错误', error });
+    res.status(500).json({ code: 500, success: false, message: '服务器错误', error });
   }
 };
 
 // 登录
 exports.login = async (req, res) => {
-  const { name, password } = req.body;
+  const { type, value, password } = req.body;
 
   try {
-    // 查询用户是否存在
-    const user = await User.findOne({ name });
-    if (!user) {
-      return res.status(401).json({ success: false, message: '用户不存在' });
-    }
-
-    // 验证密码
-    const isValidPassword = bcrypt.compareSync(password, user.password_hash);
-    if (!isValidPassword) {
-      return res.status(401).json({ success: false, message: '密码错误' });
-    }
-
-    // 生成 Token
-    const token = jwt.sign(
-      { userId: user.user_id, username: user.name },
-      process.env.JWT_SECRET,
-      { expiresIn: '7d' }
-    );
-
-    res.json({
-      success: true,
-      token,
-      user: {
-        user_id: user.user_id,
-        name: user.name,
-        tel: user.tel,
-        type: user.type,
-        created_at: user.created_at
+    // type = 0，value 为电话号码；type = 1，value 为用户名
+    if(type !== 0 && type !== 1) {
+      return res.status(400).json({ success: false, message: '无效的登录类型' });
+    } else if(type === 0) {
+      // type = 0，value 为电话号码
+      const user = await User.findOne({ tel: value });
+      // 如果没有找到用户，返回 401 错误
+      if (!user) {
+        return res.status(401).json({ success: false, message: '手机号未注册' });
       }
-    });
+      // 如果用户存在，检查密码
+      const isValidPassword = bcrypt.compareSync(password, user.password_hash);
+      if (!isValidPassword) {
+        return res.status(401).json({ success: false, message: '密码错误' });
+      }
+      // 生成 Token
+      const token = jwt.sign(
+        { userId: user.user_id, username: user.name },
+        process.env.JWT_SECRET,
+        { expiresIn: '7d' }
+      );
+
+      res.json({
+        code: 200,
+        success: true,
+        token,
+        user: {
+          user_id: user.user_id,
+          type: user.type,
+          created_at: user.created_at
+        }
+      });
+    } else {
+      // type = 1，value 为用户名
+      const user = await User.findOne({ name: value });
+      // 如果没有找到用户，返回 401 错误
+      if (!user) {
+        return res.status(401).json({ success: false, message: '用户名未注册' });
+      }
+      // 如果用户存在，检查密码
+      const isValidPassword = bcrypt.compareSync(password, user.password_hash);
+      if (!isValidPassword) {
+        return res.status(401).json({ success: false, message: '密码错误' });
+      }
+      // 生成 Token
+      const token = jwt.sign(
+        { userId: user.user_id, username: user.name },
+        process.env.JWT_SECRET,
+        { expiresIn: '7d' }
+      );
+      res.json({
+        code: 200,
+        success: true,
+        token,
+        user: {
+          user_id: user.user_id,
+          type: user.type,
+          created_at: user.created_at
+        }
+      });
+    }
 
   } catch (error) {
     console.error('登录失败:', error);
