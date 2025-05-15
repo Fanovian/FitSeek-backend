@@ -1,3 +1,14 @@
+# 忽略 node_modules
 node_modules/
+dist/
+build/
 
+# 忽略 .env（生产环境配置）
 .env
+
+# 忽略 IDE 设置
+.vscode/
+.idea/
+*.log
+.DS_Store
+Thumbs.db
