@@ -9,17 +9,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Install dependencies
-        run: npm install
-
       - name: Deploy via SSH
         uses: appleboy/ssh-action@master
         with:
@@ -37,4 +26,4 @@ jobs:
             echo "安装依赖"
             npm install
             echo "重启 Node.js 服务"
-            
+            pm2 restart server.js --name fitseek-api
