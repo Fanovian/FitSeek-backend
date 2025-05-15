@@ -17,7 +17,7 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: 22
           script: |
-            cd /root/fitseek-backend
+            cd ~
             echo "拉取最新代码"
             git fetch origin
             git reset
