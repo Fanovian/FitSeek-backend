@@ -20,9 +20,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build (if needed)
-        run: npm run build  # 如果你有 build 步骤才需要
-
       - name: Deploy via SSH
         uses: appleboy/ssh-action@master
         with:
@@ -40,4 +37,4 @@ jobs:
             echo "安装依赖"
             npm install
             echo "重启 Node.js 服务"
-            pm2 restart server.js --name fitseek-api
+            
