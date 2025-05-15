@@ -9,23 +9,12 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Install dependencies
-        run: npm install
-
       - name: Deploy via SSH
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
-          password: ${{ secrets.SSH_PASSWORD }}  # 或使用 private_key 更安全
+          password: ${{ secrets.SSH_PASSWORD }}
           port: 22
           script: |
             cd /root/fitseek-backend
@@ -34,7 +23,7 @@ jobs:
             git reset
             git checkout main
             git pull origin main
-            echo "安装依赖"
-            npm install
+            echo "安装依赖（如有新依赖）"
+            npm install --production
             echo "重启 Node.js 服务"
             
