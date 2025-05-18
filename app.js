@@ -3,6 +3,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 dotenv.config();
 connectDB();
@@ -13,6 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
+app.use('/api/admin', adminRoutes);
 
 // 错误处理中间件（可选）
 app.use((err, req, res, next) => {

@@ -4,6 +4,8 @@
 
 FitSeek 前端基于 Vue.js 和 React.js 开发，后端基于 Node.js 开发。FitSeek 提供了一套 RESTful API 接口，供前端和其他服务调用。
 
+服务器的地址及端口为 `http://123.206.217.44:3000/`，所有接口均以 `/api` 开头。
+
 ## 用户认证接口
 
 - **URL**: `/api/auth`

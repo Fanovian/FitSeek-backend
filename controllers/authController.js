@@ -116,3 +116,86 @@ exports.login = async (req, res) => {
     res.status(500).json({ success: false, message: '服务器错误', error });
   }
 };
+
+// 管理员注册
+exports.adminRegister = async (req, res) => {
+  const { name, password } = req.body;
+
+  try {
+    // 检查是否已存在用户名
+    const existingUser = await User.findOne({ name });
+    if (existingUser) {
+      return res.status(400).json({ code: 400, success: false, message: '用户名已存在' });
+    }
+
+    // 加密密码
+    const passwordHash = bcrypt.hashSync(password, 10);
+
+    // 创建新管理员用户
+    const newAdmin = new User({
+      user_id: new mongoose.Types.ObjectId().toString(),
+      name,
+      password_hash: passwordHash,
+      type: 'admin',
+    });
+
+    await newAdmin.save();
+
+    res.status(200).json({
+      code: 200,
+      success: true,
+      user: {
+        user_id: newAdmin.user_id,
+        type: newAdmin.type,
+        created_at: newAdmin.created_at
+      }
+    });
+
+  } catch (error) {
+    console.error('管理员注册失败:', error);
+    res.status(500).json({ code: 500, success: false, message: '服务器错误', error });
+  }
+};
+
+// 管理员登录
+exports.adminLogin = async (req, res) => {
+  const { name, password } = req.body;
+
+  try {
+    // 查找管理员
+    const admin = await User.findOne({ name, type: 'admin' });
+    
+    // 如果没有找到管理员用户，返回 401 错误
+    if (!admin) {
+      return res.status(401).json({ code: 401, success: false, message: '管理员账号不存在' });
+    }
+    
+    // 验证密码
+    const isValidPassword = bcrypt.compareSync(password, admin.password_hash);
+    if (!isValidPassword) {
+      return res.status(401).json({ code: 401, success: false, message: '密码错误' });
+    }
+    
+    // 生成 Token
+    const token = jwt.sign(
+      { userId: admin.user_id, username: admin.name, isAdmin: true },
+      process.env.JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    res.json({
+      code: 200,
+      success: true,
+      token,
+      user: {
+        user_id: admin.user_id,
+        type: admin.type,
+        created_at: admin.created_at
+      }
+    });
+
+  } catch (error) {
+    console.error('管理员登录失败:', error);
+    res.status(500).json({ code: 500, success: false, message: '服务器错误', error });
+  }
+};
