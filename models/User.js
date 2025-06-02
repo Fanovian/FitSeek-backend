@@ -22,7 +22,6 @@ const userSchema = new mongoose.Schema({
   },
   tel: {
     type: String,
-    unique: true,
     required: function() {
       return this.type === 'user';
     }

@@ -9,9 +9,13 @@ exports.register = async (req, res) => {
 
   try {
     // 检查是否已存在用户名或手机号
-    const existingUser = await User.findOne({ $or: [{ name }, { tel }] });
+    const existingUser = await User.findOne({ name });
     if (existingUser) {
-      return res.status(400).json({ code: 400, success: false, message: '用户名或手机号已存在' });
+      return res.status(400).json({ code: 400, success: false, message: '用户名已存在' });
+    }
+    const existingTel = await User.findOne({ tel, type: 'user' });
+    if (existingTel) {
+      return res.status(400).json({ code: 400, success: false, message: '手机号已被注册' });
     }
 
     // 加密密码
