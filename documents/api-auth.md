@@ -1,18 +1,10 @@
-# FitSeek API 接口说明
+# FitSeek API 接口说明：用户认证接口
 
-## 概述
-
-FitSeek 前端基于 Vue.js 和 React.js 开发，后端基于 Node.js 开发。FitSeek 提供了一套 RESTful API 接口，供前端和其他服务调用。
-
-服务器的地址及端口为 `http://123.206.217.44:3000/`，所有接口均以 `/api` 开头。
-
-## 用户认证接口
-
-- **URL**: `/api/auth`
-- **请求方式**: `POST`
+- **服务器地址及端口**: `https://api.fanovian.cc:3000/`
+- **基础 URL**: `/api/auth`
 - **内容类型**: `application/json`
 
-### 用户注册
+## 用户注册
 
 - **路由**: `POST /api/auth/register`
 - **请求参数**：
@@ -52,7 +44,7 @@ FitSeek 前端基于 Vue.js 和 React.js 开发，后端基于 Node.js 开发。
     }
     ```
 
-### 用户登录
+## 用户登录
 
 - **路由**: `POST /api/auth/login`
 - **请求参数**：
@@ -108,6 +100,4 @@ FitSeek 前端基于 Vue.js 和 React.js 开发，后端基于 Node.js 开发。
     }
     ```
 
-> （目前先不做）注：登录后返回用户的 JWT Token，前端需要将其存储在本地（如 uni.setStorageSync），并在后续请求中将其放入请求头中，格式为 `Authorization Bearer {token}`。该 token 被用于身份认证，前端需要在每次请求中携带该 token。token 的有效期为 7 天，过期后需要重新登录获取新的 token。
-
-
+> 注：登录后返回用户的 JWT Token，前端需要将其存储在本地（如 uni.setStorageSync），并在后续请求中将其放入请求头中，格式为 `Authorization Bearer {token}`。该 token 被用于身份认证，前端需要在每次请求中携带该 token。token 的有效期为 7 天，过期后需要重新登录获取新的 token。
