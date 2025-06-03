@@ -16,7 +16,7 @@ const foodLibrarySchema = new mongoose.Schema({
     },
     category: {
         type: String,
-        enum: ['staple', 'vegetable', 'fruit', 'meat', 'others'],
+        enum: ['staple', 'vegetable', 'fruit', 'meat', 'diary', 'snack', 'drink', 'other'],
         required: true
     },
     note: {

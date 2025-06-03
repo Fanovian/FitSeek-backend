@@ -3,9 +3,9 @@ const { Types } = require('mongoose');
 
 // 添加训练
 exports.addTrain = async (req, res) => {
-    const { name, content, category, note } = req.body;
+    const { name, category, note } = req.body;
 
-    if (!name || !content || !category) {
+    if (!name || !category) {
         return res.status(400).json({ success: false, message: '缺少必要参数' });
     }
 
@@ -13,7 +13,6 @@ exports.addTrain = async (req, res) => {
         const train = new TrainLibrary({
             train_id: new Types.ObjectId().toString(),
             name,
-            content,
             category,
             note: note || ''
         });
@@ -36,7 +35,7 @@ exports.getAllTrain = async (req, res) => {
 
 // 修改训练
 exports.updateTrain = async (req, res) => {
-    const { train_id, name, content, category, note } = req.body;
+    const { train_id, name, category, note } = req.body;
 
     if (!train_id) {
         return res.status(400).json({ success: false, message: '缺少 train_id' });

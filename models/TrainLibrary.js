@@ -10,10 +10,6 @@ const trainLibrarySchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    content: {
-        type: String,
-        required: true
-    },
     category: {
         type: String,
         enum: ['aerobic', 'anaerobic', 'streching', 'other'],
