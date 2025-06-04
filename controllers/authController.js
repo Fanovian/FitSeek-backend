@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
+const UserProfile = require('../models/UserProfile');
 const mongoose = require('mongoose');
 
 // 注册
@@ -31,6 +32,16 @@ exports.register = async (req, res) => {
     });
 
     await newUser.save();
+
+    // 注册成功后，先预填写用户资料
+    const newProfile = new UserProfile({
+      user_id: newUser.user_id,
+      age: 0,             // 默认年龄
+      gender: 'other',     // 默认性别
+      height: 170,         // 默认身高
+      weight_goal: 60      // 默认目标体重
+    });
+    await newProfile.save();
 
     res.status(200).json({
       code: 200,
