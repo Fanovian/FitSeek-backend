@@ -40,14 +40,13 @@ exports.updateTrain = async (req, res) => {
     if (!train_id) {
         return res.status(400).json({ success: false, message: '缺少 train_id' });
     }
-
+    console.log("Updating train:", train_id, name, category, note);
     try {
         const train = await TrainLibrary.findOne({ train_id });
         if (!train) {
             return res.status(404).json({ success: false, message: '训练未找到' });
         }
         if (name !== undefined) train.name = name;
-        if (content !== undefined) train.content = content;
         if (category !== undefined) train.category = category;
         if (note !== undefined) train.note = note;
         await train.save();
