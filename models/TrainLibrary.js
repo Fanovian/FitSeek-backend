@@ -12,7 +12,7 @@ const trainLibrarySchema = new mongoose.Schema({
     },
     category: {
         type: String,
-        enum: ['aerobic', 'anaerobic', 'streching', 'other'],
+        enum: ['aerobic', 'anaerobic', 'stretching', 'other'],
         required: true
     },
     note: {
