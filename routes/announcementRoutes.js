@@ -1,3 +1,4 @@
+// 公告相关路由
 const express = require('express');
 const router = express.Router();
 const { getAllAnnouncements, publishAnnouncement, deleteAnnouncement } = require('../controllers/announcementController');
@@ -9,5 +10,4 @@ router.post('/publish', publishAnnouncement);
 // 删除公告
 router.post('/delete', deleteAnnouncement);
 
-
-module.exports = router;
+module.exports = router; // 导出路由

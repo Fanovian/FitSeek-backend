@@ -1,7 +1,7 @@
 const Announcement = require('../models/Announcement');
 const { Types } = require('mongoose');
 
-// 获取所有公告
+// 获取所有公告，按发布时间倒序排列
 exports.getAllAnnouncements = async (req, res) => {
     try {
         const announcements = await Announcement.find({}).sort({ publish_time: -1 });

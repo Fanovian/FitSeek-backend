@@ -1,3 +1,4 @@
+// 文章相关路由
 const express = require('express');
 const router = express.Router();
 const { getAllArticles, publishArticle, deleteArticle } = require('../controllers/articleController');
@@ -9,4 +10,4 @@ router.post('/publish', publishArticle);
 // 删除文章
 router.post('/delete', deleteArticle);
 
-module.exports = router;
+module.exports = router; // 导出路由

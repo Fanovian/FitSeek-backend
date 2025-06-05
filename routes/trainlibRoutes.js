@@ -1,3 +1,4 @@
+// 训练库相关路由
 const express = require('express');
 const router = express.Router();
 const { addTrain, getAllTrain, updateTrain, deleteTrain } = require('../controllers/trainlibController');
@@ -11,4 +12,4 @@ router.post('/modify', updateTrain);
 // 删除训练
 router.post('/delete', deleteTrain);
 
-module.exports = router;
+module.exports = router; // 导出路由

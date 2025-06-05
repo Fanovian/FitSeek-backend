@@ -4,7 +4,7 @@ const User = require('../models/User');
 const UserProfile = require('../models/UserProfile');
 const mongoose = require('mongoose');
 
-// 注册
+// 用户注册
 exports.register = async (req, res) => {
   const { name, password, tel } = req.body;
 
@@ -59,7 +59,7 @@ exports.register = async (req, res) => {
   }
 };
 
-// 登录
+// 用户登录
 exports.login = async (req, res) => {
   const { type, value, password } = req.body;
 

@@ -1,7 +1,7 @@
 const Article = require('../models/Article');
 const { Types } = require('mongoose');
 
-// 获取所有文章
+// 获取所有文章，按发布时间倒序排列
 exports.getAllArticles = async (req, res) => {
     try {
         const articles = await Article.find({}).sort({ publish_time: -1 });
@@ -11,7 +11,7 @@ exports.getAllArticles = async (req, res) => {
     }
 };
 
-// 发布文章
+// 发布新文章
 exports.publishArticle = async (req, res) => {
     const { publisher_name, content } = req.body;
     if (!publisher_name || !content) {
